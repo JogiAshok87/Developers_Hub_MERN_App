@@ -1,0 +1,75 @@
+.bgContainer{
+    /* background-image: url('https://i.im.ge/2024/10/19/kCR2rJ.image.png');
+    height:100vh;
+    background-size:cover;
+    background-repeat: no-repeat;
+    object-fit: cover; */
+    display: flex;
+    flex-direction:row;
+    
+    justify-content: center;
+    align-items: center;
+    
+}
+.ImgDiv{
+    width:60%;
+}
+
+.contentDiv{
+    width: 40%;
+    
+}
+
+.contentDiv:nth-child(1){
+    width:100%;
+    display: flex;
+    flex-direction: column;
+   
+    justify-content: center;
+    padding:0px 0px 0px 50px;
+    
+}
+.contentDiv h1{
+    font-size:50px;
+}
+
+.contentDiv p{
+    font-size: 20px;
+}
+.authenticationBtns button{
+    padding:10px 15px;
+    margin:5px;
+    cursor: pointer;
+    border: none;
+    background-color: #0995BA;
+    border-radius: 5px;
+    color:#fff;
+    font-weight: 600;
+
+}
+.authenticationBtns button a{
+    color:#fff;
+    text-decoration-line: none;
+}
+
+@media screen and (max-width:1000px){
+    .bgContainer{
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+    .ImgDiv img{
+        width:100%;
+        
+    }
+    .contentDiv{
+        margin: 50px;
+    }
+    .contentDiv h1{
+        font-size:40px;
+    }
+    .contentDiv p{
+        font-size: 18px;
+    }
+}

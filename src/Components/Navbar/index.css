@@ -1,0 +1,44 @@
+.navbar{
+    display: flex;
+    justify-content:space-between;
+    
+    align-items: center;
+    background-color: black;
+    color:#fff;
+    padding:15px 50px;
+}
+
+.navbar button{
+    padding:10px;
+    cursor: pointer;
+    border-radius: 5px;
+    margin-right:10px;
+    background-color: transparent;
+    color:#fff;
+    text-decoration-line: none;
+    border: none;
+}
+
+.navbar button a{
+    text-decoration-line: none;
+    color:#fff;
+    font-size: larger;
+}
+.navbar h1{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.navbar h1 a{
+    color: #fff;
+    text-decoration-line: none;
+    
+}
+@media screen and (max-width:600px){
+    .navbar{
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+}

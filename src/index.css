@@ -1,0 +1,182 @@
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}
+
+/*Login css*/
+.login-form {
+  width: 300px;
+  margin: 100px auto;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+}
+
+.login-form h2 {
+  text-align: center;
+}
+
+.login-form div {
+  margin-bottom: 15px;
+}
+
+.login-form label {
+  display: block;
+  margin-bottom: 5px;
+}
+
+.login-form input {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.login-form button {
+  width: 100%;
+  padding: 10px;
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-bottom: 20px;
+}
+
+.login-form button:hover {
+  background-color: #45a049;
+}
+/* Register css*/
+
+
+.register-form {
+  width: 400px;
+  margin: 100px auto;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  background-color: #f9f9f9;
+}
+
+.register-form h2 {
+  text-align: center;
+}
+
+.register-form div {
+  margin-bottom: 15px;
+}
+
+.register-form label {
+  display: block;
+  margin-bottom: 5px;
+}
+
+.register-form input {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.register-form button {
+  width: 100%;
+  padding: 12px;
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.register-form button:hover {
+  background-color: #45a049;
+}
+
+.register-form p {
+  text-align: center;
+  margin-top: 15px;
+}
+
+.register-form a {
+  color: #4CAF50;
+  text-decoration: none;
+}
+
+.register-form a:hover {
+  text-decoration: underline;
+}
+
+/*dashboard css*/
+.dashboard{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin:50px;
+}
+.dashboard h1{
+  color:#0995BA;
+}
+.dashboardNavbarBtns:nth-child(1){
+  background-color: transparent;
+  color:#fff;
+  display: flex;
+  align-items:center;
+  justify-content: center;
+  padding:10px;
+}
+.profileCard{
+  border:1px solid #ccc;
+  margin: 20px;
+  padding:10px;
+  border-radius: 5px;
+  min-width: 800px;
+  width:100%;
+  display: flex;
+  justify-content:space-between;
+  align-items: center;
+}
+@media screen and (max-width:850px){
+  .profileCard{
+    min-width:100%;
+  }
+}
+@media screen and (max-width:600px){
+  .profileCard{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap:50px;
+    min-width:400px;
+    margin: 10px;
+  }
+
+}
+.profileCard ul li{
+  list-style-type: none;
+}
+.cardContent{
+  display: flex;
+  align-items: center;
+}
+.viewProfileBtn{
+  background-color: #0995BA;
+  list-style-type: none;
+  color:black;
+  text-decoration-line: none;
+  padding:7px 10px;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+
