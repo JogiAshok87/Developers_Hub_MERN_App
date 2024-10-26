@@ -2,7 +2,8 @@
 import React,{useState,useEffect} from 'react'
 import { Link,useParams} from 'react-router-dom'
 import axios from 'axios'
-
+import { ToastContainer, toast } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
 import '../Components/Navbar/index.css'
 import '../CSS/myprofile.css'
 import { IoMdArrowRoundBack } from "react-icons/io";
@@ -10,6 +11,7 @@ import { GoCodeReview } from "react-icons/go";
 import { FaCode } from "react-icons/fa6";
 import { IoMdLogOut } from "react-icons/io";
 import { IoPersonSharp } from "react-icons/io5";
+//import { MdOutlineStar } from "react-icons/md";
 
 
 const IndividualProfile = () => {
@@ -17,6 +19,8 @@ const IndividualProfile = () => {
   const [profile, setProfile] = useState(null);
   const [rating,setRating ] = useState(null)
   const [taskprovider,setTaskProvider] = useState(null)
+  const [workReview, setWorkReview] = useState(null)
+  //const [review,setReview] = useState([])
 
   //http://localhost:5000/allprofiles
   //http://localhost:5000/myprofile
@@ -35,30 +39,68 @@ const IndividualProfile = () => {
         setProfile(selectedProfile)
       })
       .catch(err => console.error(err));
+
+      // axios.get('https://developers-hub-backend-2zvi.onrender.com/myreview',{
+      //   headers:{
+      //     'x-token':localStorage.getItem('token')
+      //   }
+      // })
+      // .then((res)=>(setReview(res.data)))
   }, [id]);
 
-  const submitHandler = e =>{
-   axios.get('https://developers-hub-backend-2zvi.onrender.com/myprofile',{
-    headers:{
-        'x-token':localStorage.getItem('token')
-    }
-   }).then(res => setTaskProvider(res.data.fullname))
 
- let review = {
-    taskprovider,
-    taskworker:profile.id,
-    rating,
- }
-    axios.post('https://developers-hub-backend-2zvi.onrender.com/addreview',review,{
-        headers:{
-            'x-token':localStorage.getItem('token')
-        }
-    }).then(res=> alert(res.data))
+  const submitHandler = e =>{
+   e.preventDefault()
+  try{
+    axios.get('https://developers-hub-backend-2zvi.onrender.com/myprofile',{
+      headers:{
+          'x-token':localStorage.getItem('token')
+      }
+     }).then(res => setTaskProvider(res.data.fullname))
+  
+   let review = {
+      taskprovider,
+      taskworker:profile.fullname,
+      rating,
+      workReview
+   }
+   console.log('review',review)
+      axios.post('https://developers-hub-backend-2zvi.onrender.com/addreview',review,{
+          headers:{
+              'x-token':localStorage.getItem('token')
+          }
+      }).then(res=> (res.data))
+  
+      toast.success("Rating Add Successfully!", {
+        position: "top-right",
+      });
+
+  }catch (error) {
+    console.error(error);
+    toast.error("Failed to add rating. Please try again.", {
+      position: "top-right",
+    });
+  }
   }
 
-  if (!profile) return <div>Loading...</div>;
+  
+
+  
+
+  if (!profile){
+    return(
+      <div className="loader-container">
+        <div className="loader"></div>
+        </div>
+    )
+
+  } 
+
+  
   return (
     <>
+    <ToastContainer />
+
     <div className='navbar'>
         <h1><Link to="/"><FaCode size={50} style={{color:'#fff',paddingRight:10}}/>Developers Hub</Link></h1>
         <div>
@@ -82,12 +124,25 @@ const IndividualProfile = () => {
       </div>
 
       <div className='addingRatings'>
-        <h3><GoCodeReview /><span style={{paddingLeft:10}}>Reviews and Ratings</span></h3>
+        <h3><GoCodeReview /><span style={{paddingLeft:10}}>Add Reviews and Ratings</span></h3>
         
         <div className='dynamicallyAddRating'>
-          <h4>Enter your reviews</h4>
+          {/* <h4>Enter your Rating</h4> */}
           <form onSubmit={submitHandler}>
+          <div>
+              <label>Review</label>
+              <input 
+              type="text" 
+              placeholder='Write your review here...' 
+              name="workReview" 
+              className='ratinginput' 
+              onChange={e =>setWorkReview(e.target.value)}
+              required
+              />
+
+            </div>
             <div>
+              <label>Enter your Rating</label>
               <input 
               type="text" 
               placeholder='Enter your rating out of 5' 
@@ -98,15 +153,34 @@ const IndividualProfile = () => {
               />
 
             </div>
-            <input type="submit" className="addRatingBtn" value="Add Rating"/>
+            <button type="submit" className="addRatingBtn"  >Add Rating</button>
           </form>
+          {/*  */}
         </div>
       </div>
+
+      {/* <div>
+        <h3>{profile.fullname} Review and Rating</h3>
+        <div>
+              <div style={{display:"flex",justifyContent:"flex-start",alignItems:"center"}}>
+              <img src="/commentProfileImg.png" alt=""/>
+              <div style={{marginTop:'10px'}}>
+                <h5>@{review.taskprovider}</h5>
+                <p><MdOutlineStar size={30} style={{color:"#f5bc42",paddingRight:"5px"}}/>{review.rating}/5</p>
+                
+              </div>
+             </div>
+             <p style={{paddingLeft:'90px',paddingTop:"0px"}}>{review.workReview}</p>
+            </div>
+      </div> */}
+
+
   </div>
     )}
     
     </>
   )
 }
+
 
 export default IndividualProfile

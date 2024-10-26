@@ -60,7 +60,9 @@ const Dashboard = () => {
                         </ul>
                     </div>
             </div>
-            )): null}
+            )): (<div className="loader-container">
+                <div className="loader"></div>
+                </div>)}
         </div>
     </div>
     </>
