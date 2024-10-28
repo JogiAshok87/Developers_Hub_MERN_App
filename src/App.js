@@ -1,25 +1,31 @@
-import React from 'react'
+import React,{Suspense,lazy} from 'react'
 import { BrowserRouter as Router,Routes,Route} from 'react-router-dom'
-import Home from './Pages/Home'
-//import Navbar from './Components/Navbar'
-import Login from './Pages/Login'
-import Register from './Pages/Register'
-import Dashboard from './Pages/Dashboard'
-import Myprofile from './Pages/Myprofile'
-import IndividualProfile from './Pages/IndividualProfile'
+const Home  = lazy(()=>import('./Pages/Home'))
+const Login = lazy(()=>import('./Pages/Login'))
+const Register = lazy(()=>import('./Pages/Register'))
+const Dashboard = lazy(()=>import('./Pages/Dashboard'))
+const Myprofile = lazy(()=>import('./Pages/Myprofile'))
+const IndividualProfile = lazy(()=>import('./Pages/IndividualProfile'))
+//import Home from './Pages/Home'
+//import Login from './Pages/Login'
+//import Register from './Pages/Register'
+// import Dashboard from './Pages/Dashboard'
+// import Myprofile from './Pages/Myprofile'
+// import IndividualProfile from './Pages/IndividualProfile'
 
 const App = () => {
   return (
    <Router>
-    
+    <Suspense fallback={<div>Loading...</div>}>
     <Routes>
       <Route exact path="/" element={<Home />}/>
-      <Route path="/login" element={<Login />}/>
-      <Route path="/register" element={<Register />}/>
-      <Route path="/dashboard" element={<Dashboard />}/>
-      <Route path="/myprofile" element={<Myprofile />}/>
-      <Route path="/individualProfile/:id" element={<IndividualProfile />}/>
+      <Route exact path="/login" element={<Login />}/>
+      <Route exact path="/register" element={<Register />}/>
+      <Route exact path="/dashboard" element={<Dashboard />}/>
+      <Route exact path="/myprofile" element={<Myprofile />}/>
+      <Route exact path="/individualProfile/:id" element={<IndividualProfile />}/>
     </Routes>
+    </Suspense>
    </Router>
   )
 }

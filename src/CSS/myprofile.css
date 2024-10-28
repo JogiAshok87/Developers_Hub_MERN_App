@@ -96,3 +96,20 @@
     animation: l3 1s infinite linear;
   }
   @keyframes l3 {to{transform: rotate(1turn)}}
+
+
+  .displayReviewsandRatings{
+    border:1px solid #444;
+    margin: 20px 0px;
+    padding:10px;
+
+  }
+  .displayReviewsandRatings img{
+    height: 100px;
+    width: 100px;
+    object-fit: cover;
+}
+.displayReviewsandRatings h4 a{
+  color:#0995BA;
+  text-decoration-line: none;
+}
