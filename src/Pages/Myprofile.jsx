@@ -133,8 +133,8 @@ const Myprofile = () => {
                           </p>
                         </div>
                       </div>
-                      <p style={{ paddingLeft: "90px", paddingTop: "0px" }}>
-                        {review.workReview}
+                      <p style={{ paddingLeft: "90px", paddingTop: "0px" ,color: review.workReview ? "black" : "red" }}>
+                        {review.workReview ||"No Review added yet"}
                       </p>
                     </div>
                   ))
