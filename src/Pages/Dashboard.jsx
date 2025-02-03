@@ -22,20 +22,20 @@ const Dashboard = () => {
       })
       .then((res) => setData(res.data));
 
-    axios
-      .get("https://developers-hub-backend-2zvi.onrender.com/myreview", {
-        headers: {
-          "x-token": localStorage.getItem("token"),
-        },
-      })
-      .then((res) => {
-        setReviews(res.data);
+    // axios
+    //   .get("https://developers-hub-backend-2zvi.onrender.com/myreview", {
+    //     headers: {
+    //       "x-token": localStorage.getItem("token"),
+    //     },
+    //   })
+    //   .then((res) => {
+    //     setReviews(res.data);
 
-        console.log("showing his reviews", res.data);
-      })
-      .catch((err) => {
-        console.error("Error fetching reviews:", err);
-      });
+    //     console.log("showing his reviews", res.data);
+    //   })
+    //   .catch((err) => {
+    //     console.error("Error fetching reviews:", err);
+    //   });
   }, [setReviews]);
 
   if (!localStorage.getItem("token")) {

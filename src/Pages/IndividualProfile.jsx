@@ -20,12 +20,13 @@ const IndividualProfile = () => {
   const [rating, setRating] = useState(null);
   const [taskprovider, setTaskProvider] = useState(null);
   const [workReview, setWorkReview] = useState(null);
-  const { reviews } = useContext(storeContext);
+  const { reviews,setReviews } = useContext(storeContext);
   //const [review,setReview] = useState([])
 
   //http://localhost:5000/allprofiles
   //http://localhost:5000/myprofile
   //http://localhost:5000/addreview
+  //http://localhost:5000/myreview
 
   useEffect(() => {
     // Fetch the profile details based on the id
@@ -42,13 +43,34 @@ const IndividualProfile = () => {
       })
       .catch((err) => console.error(err));
 
-    // axios.get('https://developers-hub-backend-2zvi.onrender.com/myreview',{
-    //   headers:{
-    //     'x-token':localStorage.getItem('token')
-    //   }
-    // })
-    // .then((res)=>(setReview(res.data)))
+    
+    
   }, [id]);
+
+  useEffect(() => {
+    if (profile) {  // Fetch reviews only when profile is set
+      axios
+        .get("https://developers-hub-backend-2zvi.onrender.com/myreview", {
+          headers: { "x-token": localStorage.getItem("token") },
+        })
+        .then((res) => {
+
+          if (Array.isArray(res.data)) {
+            setReviews(res.data); // Ensure all reviews are set
+          } else {
+            console.error("Unexpected API response", res.data);
+          }
+
+          console.log("All reviews from API", res.data);
+          const filteredReviews = res.data.filter((review) => review.taskprovider === profile.fullname);
+          console.log("Filtered Reviews",filteredReviews)
+          setReviews(filteredReviews);
+        })
+        .catch((err) => console.error(err));
+    }
+  }, [profile,setReviews]);
+
+
 
   const submitHandler = async(e) => {
     e.preventDefault();
@@ -83,6 +105,16 @@ const IndividualProfile = () => {
       toast.success("Rating Add Successfully!", {
         position: "top-right",
       });
+
+
+      // Refresh the reviews list after submitting
+    // axios.get("https://developers-hub-backend-2zvi.onrender.com/myreview", {
+    //   headers: { "x-token": localStorage.getItem("token") },
+    // }).then((res) => {
+    //   const filteredReviews = res.data.filter((r) => r.taskworker === profile?.fullname);
+    //   setReviews(filteredReviews);
+    // });
+
     } catch (error) {
       console.error(error);
       toast.error("Failed to add rating. Please try again.", {
@@ -206,7 +238,7 @@ const IndividualProfile = () => {
               Reviews and Ratings
             </h3>
             <div className="displayReviewsandRatings">
-              {reviews.length > 0 ? (
+              {Array.isArray(reviews) && reviews.length > 0 ? (
                 reviews.map((review, index) => (
                   <div>
                     <div
