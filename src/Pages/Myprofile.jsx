@@ -22,33 +22,71 @@ const Myprofile = () => {
 
   //http://localhost:5000/myprofile
   //http://localhost:5000/myreview
+  // useEffect(() => {
+  //   axios
+  //     .get("http://localhost:5000/myprofile", {
+  //       headers: {
+  //         "x-token": localStorage.getItem("token"),
+  //       },
+  //     })
+  //     .then((res) => setData(res.data))
+  //     .catch((err) => console.error("Error fetching profile data:", err));
+
+  //   axios
+  //     .get("http://localhost:5000/myreview", {
+  //       headers: {
+  //         "x-token": localStorage.getItem("token"),
+  //       },
+  //     })
+  //     .then((res) => {
+  //       // setReviews(res.data);
+
+  //       const filteredReviews = res.data.filter(
+  //         (review) => review.taskworker === data
+  //       )
+
+  //       setLoading(false);
+  //       console.log("showing his reviews", res.data);
+  //     })
+  //     .catch((err) => {
+  //       console.error("Error fetching reviews:", err);
+  //       setLoading(false);
+  //     });
+  // }, [setReviews]);
   useEffect(() => {
-    axios
-      .get("https://developers-hub-backend-2zvi.onrender.com/myprofile", {
-        headers: {
-          "x-token": localStorage.getItem("token"),
-        },
-      })
-      .then((res) => setData(res.data))
-      .catch((err) => console.error("Error fetching profile data:", err));
-
-    axios
-      .get("https://developers-hub-backend-2zvi.onrender.com/myreview", {
-        headers: {
-          "x-token": localStorage.getItem("token"),
-        },
-      })
-      .then((res) => {
-        setReviews(res.data);
-
+    // Fetch profile and reviews
+    const fetchData = async () => {
+      try {
+        const profileRes = await axios.get("http://localhost:5000/myprofile", {
+          headers: {
+            "x-token": localStorage.getItem("token"),
+          },
+        });
+        setData(profileRes.data);
+  
+        const reviewsRes = await axios.get("http://localhost:5000/myreview", {
+          headers: {
+            "x-token": localStorage.getItem("token"),
+          },
+        });
+  
+        // Filter reviews where current user is the taskworker
+        const filteredReviews = reviewsRes.data.filter(
+          (review) => review.taskworker === profileRes.data.fullname
+        );
+        
+        console.log("Filtered reviews:", filteredReviews);
+        setReviews(filteredReviews);
         setLoading(false);
-        console.log("showing his reviews", res.data);
-      })
-      .catch((err) => {
-        console.error("Error fetching reviews:", err);
+      } catch (err) {
+        console.error("Error fetching data:", err);
         setLoading(false);
-      });
+      }
+    };
+  
+    fetchData();
   }, [setReviews]);
+  
 
   if (!localStorage.getItem("token")) {
     return <Navigate to="/login" />;

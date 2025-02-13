@@ -32,7 +32,7 @@ const Register = () => {
     }
 
     try {
-      const response = await axios.post('https://developers-hub-backend-2zvi.onrender.com/register', data); //http://localhost:5000/register
+      const response = await axios.post('http://localhost:5000/register', data); //http://localhost:5000/register
       localStorage.setItem('token', response.data.token); // Assuming the backend returns a token
       setAuth(true);
     } catch (err) {
@@ -47,10 +47,14 @@ const Register = () => {
   // Handling form submission
   
   return (
+    <>
+    
     <div className="register-form">
-    <h2>Register</h2>
+    <p>Register as <Link to="/clientRegisteration">Client</Link></p>
+    <h2>Register as developer</h2>
     <form onSubmit={handleSubmit}>
       {/* Name */}
+      <div className='Twodivs'>
       <div>
         <label>Name:</label>
         <input
@@ -74,6 +78,10 @@ const Register = () => {
           required
         />
       </div>
+      </div>
+
+
+      <div className='Twodivs'>
       
       {/* Mobile */}
       <div>
@@ -88,7 +96,7 @@ const Register = () => {
       </div>
       
       {/* Skill */}
-      <div>
+      <div >
         <label>Skill:</label>
         <input
           type="text"
@@ -99,8 +107,10 @@ const Register = () => {
         />
         <p style={{color:'grey',margin:'1px',textAlign:'left'}}><span style={{color:"red"}}>* </span>Please provide skills by separation of comma(,)</p>
       </div>
+      </div>
       
       {/* Password */}
+      <div className='Twodivs'>
       <div>
         <label>Password:</label>
         <input
@@ -124,6 +134,7 @@ const Register = () => {
           required
         />
       </div>
+      </div>
       
       {/* Error message */}
       {/* {error && <p style={{ color: 'red' }}>{error}</p>} */}
@@ -138,7 +149,9 @@ const Register = () => {
       Already have an account? <Link to="/login">Sign In</Link>
     </p>
   </div>
+  </>
   )
+  
 }
 
 export default Register

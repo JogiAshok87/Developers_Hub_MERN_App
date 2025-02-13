@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useEffect, useContext ,useCallback} from "react";
 import { Link, useParams } from "react-router-dom";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
@@ -17,11 +17,11 @@ import { storeContext } from "../ContextAPI";
 const IndividualProfile = () => {
   const { id } = useParams(); // Extract the profile id from the URL
   const [profile, setProfile] = useState(null);
-  const [rating, setRating] = useState(null);
-  const [taskprovider, setTaskProvider] = useState(null);
-  const [workReview, setWorkReview] = useState(null);
+  const [rating, setRating] = useState("");
+  // const [taskprovider, setTaskProvider] = useState(null);
+  const [workReview, setWorkReview] = useState("");
   const { reviews,setReviews } = useContext(storeContext);
-  //const [review,setReview] = useState([])
+  
 
   //http://localhost:5000/allprofiles
   //http://localhost:5000/myprofile
@@ -31,68 +31,106 @@ const IndividualProfile = () => {
   useEffect(() => {
     // Fetch the profile details based on the id
 
-    axios
-      .get("https://developers-hub-backend-2zvi.onrender.com/allprofiles", {
-        headers: {
-          "x-token": localStorage.getItem("token"),
-        },
-      })
-      .then((res) => {
-        const selectedProfile = res.data.find((profile) => profile._id === id);
-        setProfile(selectedProfile);
-      })
-      .catch((err) => console.error(err));
-
-    
-    
-  }, [id]);
-
-  useEffect(() => {
-    if (profile) {  // Fetch reviews only when profile is set
-      axios
-        .get("https://developers-hub-backend-2zvi.onrender.com/myreview", {
-          headers: { "x-token": localStorage.getItem("token") },
-        })
-        .then((res) => {
-
-          if (Array.isArray(res.data)) {
-            setReviews(res.data); // Ensure all reviews are set
-          } else {
-            console.error("Unexpected API response", res.data);
+    const fetchProfile = async () => {
+      try {
+        console.log("Fetching profile for ID:", id);
+        const response = await axios.get(
+          "http://localhost:5000/allprofiles",
+          {
+            headers: {
+              "x-token": localStorage.getItem("token"),
+            },
           }
+        );
 
-          console.log("All reviews from API", res.data);
-          const filteredReviews = res.data.filter((review) => review.taskprovider === profile.fullname);
-          console.log("Filtered Reviews",filteredReviews)
-          setReviews(filteredReviews);
-        })
-        .catch((err) => console.error(err));
+        const selectedProfile = response.data.find(p => p._id === id);
+        console.log("Found profile:", selectedProfile);
+        setProfile(selectedProfile);
+      } catch (err) {
+        console.error("Error fetching profile:", err);
+        toast.error("Failed to load profile");
+      }
+    };
+
+    fetchProfile();
+}, [id]);
+
+
+  const fetchReviews= useCallback(async() => {
+    if (!profile?.fullname) {
+      console.log("No profile fullname yet, skipping review fetch");
+      return;
     }
-  }, [profile,setReviews]);
+
+    try {
+      console.log("Fetching reviews for:", profile.fullname);
+      const response = await axios.get(
+        "http://localhost:5000/myreview",
+        {
+          headers: {
+            "x-token": localStorage.getItem("token"),
+          },
+        }
+      );
+
+      // console.log("Raw reviews response:", response.data);
+
+      // if (Array.isArray(response.data)) {
+      //   const filteredReviews = response.data.filter(
+      //     review => review.taskworker.toLowerCase() === profile.fullname.toLowerCase()
+      //   );
+      //   console.log("Filtered reviews:", filteredReviews);
+      //   setReviews(filteredReviews);
+      // } else {
+      //   console.error("Unexpected response format:", response.data);
+      // }
+
+      // console.log("All reviews from API", response.data);
+      const filteredReviews = response.data.filter(
+        (review) => review.taskworker.toLowerCase() === profile.fullname.toLowerCase()
+      );
+      // console.log("Filtered Reviews", filteredReviews);
+      setReviews(filteredReviews);
+    } catch (err) {
+      console.error("Error fetching reviews:", err);
+      toast.error("Failed to load reviews");
+    } 
+    
+  },[profile?.fullname,setReviews]);
+
+  
+useEffect(()=>{
+    
+      fetchReviews()
+},[fetchReviews]);
+
 
 
 
   const submitHandler = async(e) => {
     e.preventDefault();
     try {
-      await axios
-        .get("https://developers-hub-backend-2zvi.onrender.com/myprofile", {
-          headers: {
-            "x-token": localStorage.getItem("token"),
-          },
-        })
-        .then((res) => setTaskProvider(res.data.fullname));
+      
+
+      const clientResponse = await axios.get("http://localhost:5000/clientProfile",{
+        headers:{
+          "x-token":localStorage.getItem("token"),
+        },
+      });
+
+      const clientName = clientResponse.data?.fullName || clientResponse.data?.data?.fullName
+      // console.log("client Name",clientName)
 
       let review = {
-        taskprovider,
+        taskprovider :clientName,
         taskworker: profile.fullname,
         rating,
         workReview,
       };
-      //console.log("review", review);
+      console.log("review from frontend", review);
       await axios
         .post(
-          "https://developers-hub-backend-2zvi.onrender.com/addreview",
+          "http://localhost:5000/addreview",
           review,
           {
             headers: {
@@ -100,20 +138,31 @@ const IndividualProfile = () => {
             },
           }
         )
-        .then((res) => res.data);
+        .then((res) =>{
+          // console.log("Server resposne:",res.data)
+          if (res.data && res.data.review && res.data.review.taskprovider){
+
+            // console.log("Newly added review :",res.data.review)
+            
+            setReviews((prevReviews) => [res.data.review,...prevReviews]);
+            // fetchReviews();
+            // Reset form
+          setRating("");
+          setWorkReview("");
+
+          
+          }
+
+          
+
+          
+        });
+
 
       toast.success("Rating Add Successfully!", {
         position: "top-right",
       });
 
-
-      // Refresh the reviews list after submitting
-    // axios.get("https://developers-hub-backend-2zvi.onrender.com/myreview", {
-    //   headers: { "x-token": localStorage.getItem("token") },
-    // }).then((res) => {
-    //   const filteredReviews = res.data.filter((r) => r.taskworker === profile?.fullname);
-    //   setReviews(filteredReviews);
-    // });
 
     } catch (error) {
       console.error(error);
@@ -192,6 +241,7 @@ const IndividualProfile = () => {
                   <label>Review</label>
                   <input
                     type="text"
+                    value={workReview}
                     placeholder="Write your review here..."
                     name="workReview"
                     className="ratinginput"
@@ -203,6 +253,7 @@ const IndividualProfile = () => {
                   <label>Enter your Rating</label>
                   <input
                     type="text"
+                    value={rating}
                     placeholder="Enter your rating out of 5"
                     name="rating"
                     className="ratinginput"
@@ -218,20 +269,7 @@ const IndividualProfile = () => {
             </div>
           </div>
 
-          {/* <div>
-        <h3>{profile.fullname} Review and Rating</h3>
-        <div>
-              <div style={{display:"flex",justifyContent:"flex-start",alignItems:"center"}}>
-              <img src="/commentProfileImg.png" alt=""/>
-              <div style={{marginTop:'10px'}}>
-                <h5>@{review.taskprovider}</h5>
-                <p><MdOutlineStar size={30} style={{color:"#f5bc42",paddingRight:"5px"}}/>{review.rating}/5</p>
-                
-              </div>
-             </div>
-             <p style={{paddingLeft:'90px',paddingTop:"0px"}}>{review.workReview}</p>
-            </div>
-      </div> */}
+          
           <div style={{ marginTop: "50px", marginLeft: "10px" }}>
             <h3>
               <strong style={{ color: "#FF9D3D" }}>{profile.fullname}'s</strong>{" "}
@@ -240,7 +278,7 @@ const IndividualProfile = () => {
             <div className="displayReviewsandRatings">
               {Array.isArray(reviews) && reviews.length > 0 ? (
                 reviews.map((review, index) => (
-                  <div>
+                  <div key={review._id}>
                     <div
                       style={{
                         display: "flex",
@@ -249,7 +287,7 @@ const IndividualProfile = () => {
                       }}>
                       <img src="/commentProfileImg.png" alt="" />
                       <div style={{ marginTop: "10px" }}>
-                        <h5>@{review.taskprovider}</h5>
+                        <h5>@{review.taskprovider || "unknown"}</h5>
                         <p>
                           <MdOutlineStar
                             size={30}

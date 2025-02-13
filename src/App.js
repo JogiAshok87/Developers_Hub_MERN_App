@@ -8,6 +8,8 @@ const Register = lazy(()=>import('./Pages/Register'))
 const Dashboard = lazy(()=>import('./Pages/Dashboard'))
 const Myprofile = lazy(()=>import('./Pages/Myprofile'))
 const IndividualProfile = lazy(()=>import('./Pages/IndividualProfile'))
+const ClientRegisteration = lazy(()=> import('./Pages/ClientRegisteration'))
+const ClientLogin = lazy(()=> import('./Pages/ClientLogin'))
 
 //import Home from './Pages/Home'
 //import Login from './Pages/Login'
@@ -25,7 +27,9 @@ const App = () => {
     <Routes>
       <Route exact path="/" element={<Home />}/>
       <Route exact path="/login" element={<Login />}/>
+      <Route exact path="/clientLogin" element={<ClientLogin />}/>
       <Route exact path="/register" element={<Register />}/>
+      <Route exact path="/clientRegisteration" element={<ClientRegisteration />}/>
       <Route exact path="/dashboard" element={<Dashboard />}/>
       <Route exact path="/myprofile" element={<Myprofile />}/>
       <Route exact path="/individualProfile/:id" element={<IndividualProfile />}/>

@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useContext } from "react";
+import React, { useEffect, useState, } from "react";
 import { Link, Navigate } from "react-router-dom";
 import axios from "axios";
 import "../Components/Navbar/index.css";
@@ -7,20 +7,35 @@ import { TiTick } from "react-icons/ti";
 import { IoPersonSharp } from "react-icons/io5";
 import { IoMdLogOut } from "react-icons/io";
 
-import { storeContext } from "../ContextAPI";
+// import { storeContext } from "../ContextAPI";
 
 const Dashboard = () => {
-  const { setReviews } = useContext(storeContext);
+
+  // const { setReviews } = useContext(storeContext);
+  
   //http://localhost:5000/allprofiles
   const [data, setData] = useState([]);
+  // const userRole = localStorage.getItem('role')
+
+
+
+
+
+
+
+
+
   useEffect(() => {
     axios
-      .get("https://developers-hub-backend-2zvi.onrender.com/allprofiles", {
+      .get("http://localhost:5000/allprofiles", {
         headers: {
           "x-token": localStorage.getItem("token"),
         },
       })
-      .then((res) => setData(res.data));
+      .then((res) =>{
+        console.log("Developers Data:",res.data);
+        setData(res.data);
+      }) ;
 
     // axios
     //   .get("https://developers-hub-backend-2zvi.onrender.com/myreview", {
@@ -36,11 +51,15 @@ const Dashboard = () => {
     //   .catch((err) => {
     //     console.error("Error fetching reviews:", err);
     //   });
-  }, [setReviews]);
+  }, []);
 
   if (!localStorage.getItem("token")) {
     return <Navigate to="/login" />;
   }
+
+  // if (userRole !== "developer"){
+  //   return 
+  // }
   return (
     <>
       <div className="navbar">

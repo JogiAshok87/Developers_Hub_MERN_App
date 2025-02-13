@@ -1,9 +1,10 @@
+
 import React,{useState} from 'react'
 
 import {Link,Navigate} from 'react-router-dom'
 import axios from 'axios'
 
-const Login = () => {
+const ClientLogin = () => {
   const [auth,setAuth] = useState(false)
   const [data,setData] = useState({
     email:"",
@@ -13,30 +14,30 @@ const Login = () => {
   const changeHandler = e =>{
     setData({...data,[e.target.name]:e.target.value})
   }
-  //https://developers-hub-backend-2zvi.onrender.com
+
   // Handling form submission
   const handleSubmit = (e) => {
     e.preventDefault();
-    axios.post('http://localhost:5000/login',data)
+    axios.post('http://localhost:5000/clientLogin',data)
     .then(res=>{
       localStorage.setItem('token',res.data.token);
-      localStorage.setItem("role",res.data.role)
+      localStorage.setItem('role',res.data.role);
       setAuth(true);
 
     })
-    // .catch(error){
-    //   if (error.response) {
-    //       console.log('Error response:', error.response.data);
-    //       console.log('Error status:', error.response.status);
-    //       console.log('Error headers:', error.response.headers);
-    //   } else if (error.request) {
-    //       console.log('Request made but no response received:', error.request);
-    //   } else {
-    //       console.log('Error setting up the request:', error.message);
-    //   }
-    // }
+    .catch(error => {
+      if (error.response) {
+          console.log('Error response:', error.response.data);
+          console.log('Error status:', error.response.status);
+          console.log('Error headers:', error.response.headers);
+      } else if (error.request) {
+          console.log('Request made but no response received:', error.request);
+      } else {
+          console.log('Error setting up the request:', error.message);
+      }
+    })
   
-    console.log(data)
+    //console.log(data)
     
    
   }
@@ -47,8 +48,7 @@ const Login = () => {
   return (
     <div>
         <div className="login-form">
-          <p style={{textAlign:"center"}}>Login as <Link to="/clientLogin">Client</Link></p>
-      <h2>Login as Developer</h2>
+      <h2>Login as client</h2>
       <form onSubmit={handleSubmit}>
         {/* Input for Email */}
         <div>
@@ -86,4 +86,4 @@ const Login = () => {
   )
 }
 
-export default Login
+export default ClientLogin

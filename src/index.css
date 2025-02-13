@@ -23,6 +23,8 @@ code {
 
 .login-form h2 {
   text-align: center;
+  font-size: larger;
+  padding-bottom: 20px;
 }
 
 .login-form div {
@@ -59,19 +61,41 @@ code {
 
 
 .register-form {
-  width: 400px;
+  max-width: 600px;
   margin: 100px auto;
   padding: 20px;
   border: 1px solid #ccc;
   border-radius: 10px;
   background-color: #f9f9f9;
+  max-height: 600px;
+  overflow-x: auto;
+ 
+}
+.register-form::-webkit-scrollbar {
+  width: 8px;               /* width of the entire scrollbar */
+}
+
+.register-form::-webkit-scrollbar-track {
+  background: rgb(247, 245, 242);        /* color of the tracking area */
+}
+
+.register-form::-webkit-scrollbar-thumb {
+  background-color: rgb(8, 8, 11);    /* color of the scroll thumb*/
+  border-radius: 20px;       /* roundness of the scroll thumb */
+  /* border: 3px solid rgb(0, 255, 64);  creates padding around scroll thumb */
 }
 
 .register-form h2 {
   text-align: center;
 }
+/* .Twodivs{
+  display: flex;
+  justify-content: space-between;
+  
+} */
 
 .register-form div {
+ 
   margin-bottom: 15px;
 }
 
@@ -81,14 +105,14 @@ code {
 }
 
 .register-form input {
-  width: 100%;
-  padding: 10px;
+  width: 95%;
+  padding:10px;
   border: 1px solid #ccc;
   border-radius: 5px;
 }
 
 .register-form button {
-  width: 100%;
+  max-width: 100%;
   padding: 12px;
   background-color: #4CAF50;
   color: white;
