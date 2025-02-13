@@ -27,7 +27,7 @@ const Dashboard = () => {
 
   useEffect(() => {
     axios
-      .get("http://localhost:5000/allprofiles", {
+      .get("https://developers-hub-backend-2zvi.onrender.com/allprofiles", {
         headers: {
           "x-token": localStorage.getItem("token"),
         },

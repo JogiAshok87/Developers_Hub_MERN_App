@@ -18,7 +18,7 @@ const ClientLogin = () => {
   // Handling form submission
   const handleSubmit = (e) => {
     e.preventDefault();
-    axios.post('http://localhost:5000/clientLogin',data)
+    axios.post('https://developers-hub-backend-2zvi.onrender.com/clientLogin',data)
     .then(res=>{
       localStorage.setItem('token',res.data.token);
       localStorage.setItem('role',res.data.role);

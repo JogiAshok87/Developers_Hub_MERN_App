@@ -32,7 +32,7 @@ const Register = () => {
     }
 
     try {
-      const response = await axios.post('http://localhost:5000/register', data); //http://localhost:5000/register
+      const response = await axios.post('https://developers-hub-backend-2zvi.onrender.com/register', data); //http://localhost:5000/register
       localStorage.setItem('token', response.data.token); // Assuming the backend returns a token
       setAuth(true);
     } catch (err) {

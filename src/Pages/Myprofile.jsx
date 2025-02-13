@@ -57,14 +57,14 @@ const Myprofile = () => {
     // Fetch profile and reviews
     const fetchData = async () => {
       try {
-        const profileRes = await axios.get("http://localhost:5000/myprofile", {
+        const profileRes = await axios.get("https://developers-hub-backend-2zvi.onrender.com/myprofile", {
           headers: {
             "x-token": localStorage.getItem("token"),
           },
         });
         setData(profileRes.data);
   
-        const reviewsRes = await axios.get("http://localhost:5000/myreview", {
+        const reviewsRes = await axios.get("https://developers-hub-backend-2zvi.onrender.com/myreview", {
           headers: {
             "x-token": localStorage.getItem("token"),
           },

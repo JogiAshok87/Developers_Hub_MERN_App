@@ -31,7 +31,7 @@ const ClientRegisteration = () => {
         }
 
         try{
-          const response =  await axios.post('http://localhost:5000/clientRegister',data);
+          const response =  await axios.post('https://developers-hub-backend-2zvi.onrender.com/clientRegister',data);
           localStorage.setItem('token',response.data.token);
           localStorage.setItem('role',response.data.role);
           setAuth(true)

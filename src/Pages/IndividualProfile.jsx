@@ -35,7 +35,7 @@ const IndividualProfile = () => {
       try {
         console.log("Fetching profile for ID:", id);
         const response = await axios.get(
-          "http://localhost:5000/allprofiles",
+          "https://developers-hub-backend-2zvi.onrender.com/allprofiles",
           {
             headers: {
               "x-token": localStorage.getItem("token"),
@@ -65,7 +65,7 @@ const IndividualProfile = () => {
     try {
       console.log("Fetching reviews for:", profile.fullname);
       const response = await axios.get(
-        "http://localhost:5000/myreview",
+        "https://developers-hub-backend-2zvi.onrender.com/myreview",
         {
           headers: {
             "x-token": localStorage.getItem("token"),
@@ -112,7 +112,7 @@ useEffect(()=>{
     try {
       
 
-      const clientResponse = await axios.get("http://localhost:5000/clientProfile",{
+      const clientResponse = await axios.get("https://developers-hub-backend-2zvi.onrender.com/clientProfile",{
         headers:{
           "x-token":localStorage.getItem("token"),
         },
@@ -130,7 +130,7 @@ useEffect(()=>{
       console.log("review from frontend", review);
       await axios
         .post(
-          "http://localhost:5000/addreview",
+          "https://developers-hub-backend-2zvi.onrender.com/addreview",
           review,
           {
             headers: {
